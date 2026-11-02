@@ -55,3 +55,11 @@ src/lib/            GSAP setup, link helpers, nav links
 - Custom cursor and magnetic buttons only on fine pointers; hidden with reduced motion.
 - Skip link, semantic landmarks, labelled form fields with inline errors, keyboard-accessible menu tabs and mobile menu (Esc closes).
 - Google Map loads lazily only when the section approaches.
+
+## Deploying for testing (Vercel, free)
+
+1. Sign in at https://vercel.com with GitHub.
+2. **Add New → Project**, pick `rohailasad23/dana-pani-`, keep the detected **Next.js** settings, click **Deploy**.
+3. You get a `*.vercel.app` URL in about a minute. Every push to `main` redeploys automatically; every pull request gets its own preview URL.
+
+Before going live: set `site.url` in `src/content/site.ts` to the real domain.
