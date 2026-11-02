@@ -1,17 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import localFont from "next/font/local";
 import { site } from "@/content/site";
 import { fullAddress } from "@/lib/links";
 import "./globals.css";
 
-const serif = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
+// Fonts are self-hosted (Google Fonts, SIL Open Font License) so builds never depend on a network fetch.
+const serif = localFont({
+  src: [
+    { path: "../fonts/cormorant-garamond-latin.woff2", weight: "300 700", style: "normal" },
+    { path: "../fonts/cormorant-garamond-latin-italic.woff2", weight: "300 700", style: "italic" },
+  ],
   variable: "--font-cormorant",
   display: "swap",
+  fallback: ["Georgia", "serif"],
 });
-const sans = Manrope({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-manrope", display: "swap" });
+const sans = localFont({
+  src: [{ path: "../fonts/manrope-latin.woff2", weight: "200 800", style: "normal" }],
+  variable: "--font-manrope",
+  display: "swap",
+  fallback: ["system-ui", "sans-serif"],
+});
 
 const title = "Dana Pani Restaurant | Traditional Pakistani Dining in Peoples Colony, Multan";
 const description =
