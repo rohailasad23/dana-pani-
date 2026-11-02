@@ -1,0 +1,326 @@
+@import "tailwindcss";
+
+@theme {
+  --color-emerald: #123c32;
+  --color-emerald-deep: #0b2620;
+  --color-charcoal: #171714;
+  --color-gold: #c6a56b;
+  --color-gold-soft: #dcc493;
+  --color-ivory: #f5f0e6;
+  --color-ivory-dim: #e9e1d1;
+  --color-terracotta: #a65e43;
+  --color-ink: #2a2620;
+
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-manrope), "Manrope", system-ui, sans-serif;
+
+  --ease-silk: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  color-scheme: light;
+  --gutter: clamp(1rem, 4vw, 3.5rem);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--color-charcoal);
+  color: var(--color-ivory);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-charcoal);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+/* Intro lock: prevent scrolling during the ~2.6s title sequence */
+html.is-intro body {
+  overflow: hidden;
+}
+
+.gutter {
+  padding-inline: var(--gutter);
+}
+
+/* Editorial eyebrow label */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Gold hairline with a diamond centre */
+.rule-gold {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold) 20%, var(--color-gold) 80%, transparent);
+  opacity: 0.6;
+}
+
+/* Gold sheen that sweeps across the brand name */
+.sheen {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-ivory) 0%,
+    var(--color-ivory) 40%,
+    #fff3d6 47%,
+    var(--color-gold) 50%,
+    #fff3d6 53%,
+    var(--color-ivory) 60%,
+    var(--color-ivory) 100%
+  );
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Film grain overlay */
+.grain {
+  pointer-events: none;
+  position: absolute;
+  inset: -50%;
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: grain 1.2s steps(6) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-4%, 3%); }
+  40% { transform: translate(3%, -2%); }
+  60% { transform: translate(-2%, -4%); }
+  80% { transform: translate(4%, 2%); }
+  100% { transform: translate(0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .grain { animation: none; }
+}
+
+/* Mughal arch silhouette */
+.arch {
+  border-radius: 999px 999px 0 0;
+}
+.arch-pointed {
+  clip-path: path("M0 1000 L0 380 C0 170 200 40 500 0 C800 40 1000 170 1000 380 L1000 1000 Z");
+}
+
+/* Text mask lines (for line-by-line reveals) */
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.mask-line > span {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* Custom cursor */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 100;
+  border-radius: 999px;
+  transform: translate3d(-100px, -100px, 0);
+}
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  background: var(--color-gold);
+}
+.cursor-ring {
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 70%, transparent);
+  display: grid;
+  place-items: center;
+  transition: width 0.4s var(--ease-silk), height 0.4s var(--ease-silk), margin 0.4s var(--ease-silk),
+    background-color 0.4s var(--ease-silk), border-color 0.4s;
+}
+.cursor-ring span {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-charcoal);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-weight: 700;
+}
+.cursor-ring.is-active {
+  width: 92px;
+  height: 92px;
+  margin: -46px 0 0 -46px;
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+}
+.cursor-ring.is-active span {
+  opacity: 1;
+}
+.cursor-ring.is-hover {
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+}
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+}
+
+/* Form fields */
+.field {
+  position: relative;
+}
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-ivory) 25%, transparent);
+  padding: 1.6rem 0 0.6rem;
+  color: var(--color-ivory);
+  font-size: 1.05rem;
+  border-radius: 0;
+  outline: none;
+  transition: border-color 0.4s var(--ease-silk);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.field textarea {
+  resize: vertical;
+  min-height: 6rem;
+}
+.field select option {
+  background: var(--color-emerald-deep);
+  color: var(--color-ivory);
+}
+.field input::-webkit-calendar-picker-indicator {
+  filter: invert(0.8) sepia(1) saturate(2) hue-rotate(5deg);
+  cursor: pointer;
+}
+.field label {
+  position: absolute;
+  left: 0;
+  top: 1.6rem;
+  font-size: 1.05rem;
+  color: color-mix(in srgb, var(--color-ivory) 55%, transparent);
+  pointer-events: none;
+  transform-origin: left top;
+  transition: transform 0.45s var(--ease-silk), color 0.3s;
+}
+.field.is-filled label,
+.field:focus-within label {
+  transform: translateY(-1.35rem) scale(0.72);
+  color: var(--color-gold);
+  letter-spacing: 0.08em;
+}
+.field::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s var(--ease-silk);
+}
+.field:focus-within::after {
+  transform: scaleX(1);
+}
+.field.has-error input,
+.field.has-error select {
+  border-bottom-color: #e08a6b;
+}
+.field .error {
+  font-size: 0.78rem;
+  color: #f0a283;
+  margin-top: 0.4rem;
+  min-height: 1rem;
+}
+
+/* Hide scrollbar for horizontal chip rows */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Map tint */
+.map-tint iframe {
+  filter: grayscale(0.55) sepia(0.45) hue-rotate(-8deg) saturate(1.1) contrast(1.02) brightness(0.92);
+  transition: filter 0.8s var(--ease-silk);
+}
+.map-tint:hover iframe,
+.map-tint:focus-within iframe {
+  filter: none;
+}
+
+/* ── Intro gating ──
+   `js` is added by an inline head script; `no-intro` when reduced motion
+   or the intro has already played this session. */
+.intro-overlay { display: none; }
+.js:not(.no-intro) .intro-overlay { display: block; }
+.js:not(.no-intro) [data-intro-hide] { visibility: hidden; }
+/* Fail-safe: never leave content hidden if scripts stall */
+.js:not(.no-intro) [data-intro-hide] { animation: intro-failsafe 0s 6s forwards; }
+.js:not(.no-intro) .intro-overlay { animation: intro-overlay-failsafe 0s 6s forwards; }
+@keyframes intro-failsafe { to { visibility: visible; } }
+@keyframes intro-overlay-failsafe { to { opacity: 0; visibility: hidden; } }
+
+@keyframes scrollcue {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .table-desktop { overflow-x: auto; }
+}
+
+/* Menu row warm light that follows the pointer */
+.menu-row {
+  --mx: 50%;
+  --my: 50%;
+}
+.menu-row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(420px circle at var(--mx) var(--my), rgba(198, 165, 107, 0.22), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-silk);
+  pointer-events: none;
+}
+.menu-row:hover::before,
+.menu-row.is-open::before {
+  opacity: 1;
+}
